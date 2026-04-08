@@ -1,32 +1,14 @@
 {
-  "name": "Virtual Workspace + 512GB Secondary Storage",
-  "postStartCommand": "bash -c '
-    echo \"=== 512GB Secondary Big Storage Check (postStartCommand) ===\"
-    if ! mountpoint -q /workspaces/bigdata; then
-      echo \"Bigdata not mounted. Attempting mount by LABEL=BIGDATA...\"
-      sudo mount LABEL=BIGDATA /workspaces/bigdata 2>/dev/null && echo \"SUCCESS: BIGDATA mounted\" || {
-        echo \"WARNING: Could not auto-mount BIGDATA.\"
-        echo \"The 512GB disk may have been reset by GitHub (common after stop/start or rebuild).\"
-
-        echo \"Manual recovery options:\"
-        echo \"  1. sudo mount /dev/sdc1 /workspaces/bigdata   (if device exists)\"
-        echo \"  2. Check with: sudo lsblk -f /dev/sdc\"
-      }
-    else
-      echo \"SUCCESS: BIGDATA already mounted at /workspaces/bigdata\"
-    fi
-
-    # Always ensure correct ownership
-    sudo chown -R codespace:codespace /workspaces/bigdata 2>/dev/null || true
-
-    # Show clear status
-    echo \"Main 32GB workspace: $(df -h /workspaces | tail -1)\"
-    df -h /workspaces/bigdata 2>/dev/null | tail -1 || echo \"Bigdata: Not mounted\"
-    echo \"=== End of Big Storage Check ===\"
-  '",
-  "customizations": {
-    "vscode": {
-      "extensions": []
+    "name": "Self-Healing Mega Build Environment",
+    "build": {
+        "dockerfile": "Dockerfile"
+    },
+    "postStartCommand": "bash .devcontainer/rebuild-cache.sh",
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "terminal.integrated.defaultProfile.linux": "bash"
+            }
+        }
     }
-  }
 }
