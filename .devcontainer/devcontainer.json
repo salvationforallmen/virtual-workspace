@@ -1,0 +1,28 @@
+{
+  "name": "Virtual Workspace + 512GB Secondary Storage",
+  "postStartCommand": "bash -c '
+    echo \"=== 512GB Secondary Storage Check ===\"
+    if ! mountpoint -q /workspaces/bigdata; then
+      echo \"Trying to mount BIGDATA secondary storage...\"
+      # Try mount by label (safer)
+      sudo mount LABEL=BIGDATA /workspaces/bigdata 2>/dev/null || {
+        echo \"WARNING: BIGDATA disk not found or not formatted.\"
+        echo \"You may need to run manual mount after stop/start or rebuild.\"
+      }
+    else
+      echo \"BIGDATA already mounted.\"
+    fi
+    
+    # Fix permissions just in case
+    sudo chown -R codespace:codespace /workspaces/bigdata 2>/dev/null || true
+    
+    # Show status
+    df -h /workspaces/bigdata 2>/dev/null | tail -1 || echo \"No bigdata mount detected.\"
+    echo \"Main workspace status: $(df -h /workspaces | tail -1)\"
+  '",
+  "customizations": {
+    "vscode": {
+      "extensions": []
+    }
+  }
+}
