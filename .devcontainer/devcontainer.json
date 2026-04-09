@@ -7,6 +7,11 @@
         "cpus": 4,
         "memory": "16gb"
     },
+    "features": {
+        "ghcr.io/devcontainers/features/sshd:1": {
+            "version": "latest"
+        }
+    },
     "postStartCommand": "bash .devcontainer/rebuild-cache.sh",
     "customizations": {
         "vscode": {
