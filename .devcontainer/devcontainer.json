@@ -3,6 +3,10 @@
     "build": {
         "dockerfile": "Dockerfile"
     },
+    "hostRequirements": {
+        "cpus": 8,
+        "memory": "32gb"
+    },
     "postStartCommand": "bash .devcontainer/rebuild-cache.sh",
     "customizations": {
         "vscode": {
