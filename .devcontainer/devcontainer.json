@@ -4,8 +4,8 @@
         "dockerfile": "Dockerfile"
     },
     "hostRequirements": {
-        "cpus": 8,
-        "memory": "32gb"
+        "cpus": 4,
+        "memory": "16gb"
     },
     "postStartCommand": "bash .devcontainer/rebuild-cache.sh",
     "customizations": {
